@@ -7,7 +7,7 @@ import {
 
 @Entity('vaccine')
 export class VaccineEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({ type: 'int' })
