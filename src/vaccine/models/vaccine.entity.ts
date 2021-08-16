@@ -1,6 +1,5 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -10,8 +9,8 @@ export class VaccineEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ type: 'int' })
-  user_id: number;
+  @Column({ default: '' })
+  user_id: string;
 
   @Column({ default: '' })
   name: string;

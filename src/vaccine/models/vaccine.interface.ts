@@ -1,6 +1,6 @@
 export interface Vaccine {
     id?: number;
-    user_id?: number;
+    user_id?: string;
     name?: string;
     amount?: number;
     email?: string;
