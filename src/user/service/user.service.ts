@@ -13,6 +13,10 @@ export class UserService {
         private readonly userRepository: Repository<UserEntity>,
     ){}
 
+    findOne(id: string): Observable<User>{
+        return from(this.userRepository.findOne({id}));
+    }
+
     findAllData(): Observable<User[]>{
         return from(this.userRepository.query('SELECT * FROM public.user'));
     }

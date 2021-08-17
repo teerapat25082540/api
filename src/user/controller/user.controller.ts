@@ -9,14 +9,19 @@ export class UserController {
 
     constructor(private userService: UserService){}
 
+    @Post()
+    creatrData(@Body() userPoint: User): Observable<User>{
+        return this.userService.createData(userPoint);
+    }
+    
     @Get()
     findAllData(): Observable<User[]> {
         return this.userService.findAllData();
     }
 
-    @Post()
-    creatrData(@Body() userPoint: User): Observable<User>{
-        return this.userService.createData(userPoint);
+    @Get(':id')
+    findOne(@Param() params): Observable<User> {
+        return this.userService.findOne(params.id);
     }
 
     @Put(':id')
