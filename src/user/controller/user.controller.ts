@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { catchError, Observable, of, map } from 'rxjs';
+import { catchError, of, map } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { User } from '../model/user.interface';
+import { UserDto } from '../model/user.dto';
 import { UserService } from '../service/user.service';
 
 @Controller('user')
@@ -11,44 +11,38 @@ export class UserController {
     constructor(private userService: UserService){}
 
     @Post()
-    creatrData(@Body() userPoint: User): Observable<User | Object>{
-        return this.userService.createData(userPoint).pipe(
-            map((user: User) => user),
-            catchError(err => of({error: err.message}))
-        );
+    async createData(@Body() userPoint: UserDto): Promise<UserDto | Object>{
+        return await this.userService.createData(userPoint);
+        
     }
 
     @Post('login')
-    login(@Body() user:User): Observable<Object> {
-        return this.userService.login(user).pipe(
-            map((jwt: string) => {
-                return {access_token: jwt};
-            })
-        )
+    async login(@Body() user:UserDto): Promise<Object> {
+        return await this.userService.login(user)
     }
     
     @UseGuards(JwtAuthGuard)
     @Get()
-    findAllData(): Observable<User[]> {
-        return this.userService.findAllData();
+    async findAllData(): Promise<UserDto[]> {
+        return await this.userService.findAllData();
     }
 
     @UseGuards(JwtAuthGuard)
     @Get(':id')
-    findOne(@Param() params): Observable<User> {
-        return this.userService.findOne(params.id);
+    async findOne(@Param() params): Promise<UserDto> {
+        return await this.userService.findOne(params.id);
     }
 
     @Put(':id')
-    updateData(
+    async updateData(
         @Param('id') id: string,
-        @Body() userPoint: User,
-    ): Observable<UpdateResult> {
-        return this.userService.updateData(id, userPoint);
+        @Body() userPoint: UserDto,
+    ): Promise<UpdateResult> {
+        return await this.userService.updateData(id, userPoint);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: string): Observable<DeleteResult> {
-        return this.userService.deleteData(id);
+    async delete(@Param('id') id: string): Promise<DeleteResult> {
+        return await this.userService.deleteData(id);
     }
 }

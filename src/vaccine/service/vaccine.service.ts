@@ -12,23 +12,23 @@ export class VaccineService {
     private readonly vaccineRepository: Repository<VaccineEntity>,
   ) {}
 
-  findAllData(): Observable<Vaccine[]> {
-    return from(this.vaccineRepository.query("SELECT * FROM public.vaccine"));
+  async findAllData(): Promise<Vaccine[]> {
+    return await this.vaccineRepository.query("SELECT * FROM public.vaccine");
   }
 
-  findAllDataFromId(user_id: string): Observable<Vaccine[]> {
-    return from(this.vaccineRepository.query(`SELECT * FROM public.vaccine WHERE user_id = '${user_id}'`));
+  async findAllDataFromId(user_id: string): Promise<Vaccine[]> {
+    return await this.vaccineRepository.query(`SELECT * FROM public.vaccine WHERE user_id = '${user_id}'`);
   }
 
-  createData(vaccineData: Vaccine): Observable<Vaccine> {
-    return from(this.vaccineRepository.save(vaccineData));
+  async createData(vaccineData: Vaccine): Promise<Vaccine> {
+    return await this.vaccineRepository.save(vaccineData);
   }
 
-  updateData(id: string, vaccineData: Vaccine): Observable<UpdateResult> {
-    return from(this.vaccineRepository.update(id, vaccineData));
+  async updateData(id: string, vaccineData: Vaccine): Promise<UpdateResult> {
+    return await this.vaccineRepository.update(id, vaccineData);
   }
 
-  deleteData(id: string): Observable<DeleteResult> {
-    return from(this.vaccineRepository.delete(id));
+  async deleteData(id: string): Promise<DeleteResult> {
+    return await this.vaccineRepository.delete(id);
   }
 }
