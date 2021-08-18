@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { catchError, Observable, of, map } from 'rxjs';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { User } from '../model/user.interface';
 import { UserService } from '../service/user.service';
@@ -26,11 +27,13 @@ export class UserController {
         )
     }
     
+    @UseGuards(JwtAuthGuard)
     @Get()
     findAllData(): Observable<User[]> {
         return this.userService.findAllData();
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     findOne(@Param() params): Observable<User> {
         return this.userService.findOne(params.id);
