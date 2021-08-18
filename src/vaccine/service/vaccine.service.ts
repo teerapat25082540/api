@@ -13,18 +13,22 @@ export class VaccineService {
   ) {}
 
   findAllData(): Observable<Vaccine[]> {
-    return from(this.vaccineRepository.query('SELECT * FROM public.vaccine'));
+    return from(this.vaccineRepository.query("SELECT * FROM public.vaccine"));
+  }
+
+  findAllDataFromId(user_id: string): Observable<Vaccine[]> {
+    return from(this.vaccineRepository.query(`SELECT * FROM public.vaccine WHERE user_id = '${user_id}'`));
   }
 
   createData(vaccineData: Vaccine): Observable<Vaccine> {
     return from(this.vaccineRepository.save(vaccineData));
   }
 
-  updateData(id: number, vaccineData: Vaccine): Observable<UpdateResult> {
+  updateData(id: string, vaccineData: Vaccine): Observable<UpdateResult> {
     return from(this.vaccineRepository.update(id, vaccineData));
   }
 
-  deleteData(id: number): Observable<DeleteResult> {
+  deleteData(id: string): Observable<DeleteResult> {
     return from(this.vaccineRepository.delete(id));
   }
 }
