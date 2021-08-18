@@ -1,11 +1,12 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { match } from 'assert/strict';
-import { catchError, from, switchMap, throwError, map } from 'rxjs';
+import { catchError, from, switchMap, throwError, map, Observable } from 'rxjs';
 import { AuthService } from 'src/auth/service/auth.service';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UserEntity } from '../model/user.entity';
 import { UserDto } from '../model/user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
   ) {}
 
   async findOne(id: string): Promise<UserDto> {
-    return await this.userRepository.findOne({ id })
+    return await this.userRepository.findOne({ id });
     // .pipe(
     //   map((user: UserDto) => {
     //     const { password, ...result } = user;
@@ -29,11 +30,33 @@ export class UserService {
     return await this.userRepository.find();
   }
 
+  createData(user: UserDto): Observable<UserDto> {
+    return this.authService.hashPassword(user.password).pipe(
+      switchMap((passwordHash: string) => {
+        const newUser = new UserEntity();
+        newUser.username = user.username;
+        newUser.password = passwordHash;
+        newUser.firstname = user.firstname;
+        newUser.lastname = user.lastname;
+        newUser.email = user.email;
+        newUser.tel = user.tel;
 
-  async createData(user: UserDto): Promise<UserDto> {
-      return await this.userRepository.save(user);
-
+        return from(this.userRepository.save(newUser)).pipe(
+          map((user: UserDto) => {
+            const { password, ...result } = user;
+            return result;
+          }),
+          catchError((err) => throwError(err)),
+        );
+      }),
+    );
   }
+
+  //   async createData(user: UserDto): Promise<UserDto> {
+
+  //     return await this.userRepository.save(user);
+
+  //   }
 
   async updateData(id: string, userData: UserDto): Promise<UpdateResult> {
     return await this.userRepository.update(id, userData);
