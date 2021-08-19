@@ -82,7 +82,7 @@ export class UserService {
     if (comparePass) {
       const { password, ...result } = user;
       const accessToken = await this.authService.generateJWT(user);
-      return { accessToken: accessToken };
+      return { accessToken: accessToken, userData: user };
     } else {
       throw Error;
     }
