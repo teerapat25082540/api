@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
-import { UserDto } from 'src/user/model/user.dto';
+import { ReturnDataDto, UserDto } from 'src/user/model/user.dto';
 const bcrypt = require('bcrypt');
 
+interface userData {
+    username: ""
+}
 @Injectable()
 export class AuthService {
 
     constructor(private readonly jwtService: JwtService){}
 
-    async generateJWT(user: UserDto): Promise <string> {
+    async generateJWT(user: string): Promise <string> {
+        // console.log(this.jwtService.signAsync({user}))
         return await this.jwtService.signAsync({user});
+        // return null
     }
 
     hashPassword(password: string): Observable <string> {

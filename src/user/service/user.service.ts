@@ -88,15 +88,36 @@ export class UserService {
     );
 
     if (comparePass) {
-      const { password, ...result } = user;
-      const accessToken = await this.authService.generateJWT(user);
-      return this.jwtDecode(accessToken);
+      //const { ...result } = user;
+      const accessToken = await this.authService.generateJWT(user.id);
+      return { accessToken: accessToken};
     } else {
       return { status: "failed"}
     }
   }
 
   async findByUsername(username: string): Promise<UserDto> {
+    // console.log(username)
+    // return null
     return await this.userRepository.findOne({ username: username });
+  }
+
+  async findById(acccessToken: string): Promise<any> {
+  
+    const decoded: any = await jwt_decode(acccessToken);
+    const userId: string = decoded.user
+    const res = await this.userRepository.findOne(userId)
+   
+    const Objdata: object = {
+      id: res.id,
+      username: res.username,
+      firstname: res.firstname,
+      lastname: res.lastname,
+      email: res.email,
+      tel: res.tel,
+      createAt: res.createAt,
+    }
+
+    return Objdata;
   }
 }
