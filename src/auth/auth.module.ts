@@ -10,7 +10,7 @@ import { jwtConstants } from './constants';
   imports: [
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '100s' },
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   providers: [AuthService, JwtAuthGuard, JwtStrategy],

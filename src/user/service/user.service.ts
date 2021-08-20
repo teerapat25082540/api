@@ -7,6 +7,8 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { UserEntity } from '../model/user.entity';
 import { UserDto } from '../model/user.dto';
 import * as bcrypt from 'bcrypt';
+import jwt_decode from 'jwt-decode'
+
 
 @Injectable()
 export class UserService {
@@ -71,6 +73,12 @@ export class UserService {
     return userx;
   }
 
+  async jwtDecode(accessToken: string): Promise<any>{
+    var token = accessToken;
+    var decoded = await jwt_decode(token);
+    return decoded;
+  }
+
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.findByUsername(username);
 
@@ -82,9 +90,9 @@ export class UserService {
     if (comparePass) {
       const { password, ...result } = user;
       const accessToken = await this.authService.generateJWT(user);
-      return { accessToken: accessToken, userData: user };
+      return this.jwtDecode(accessToken);
     } else {
-      throw Error;
+      return { status: "failed"}
     }
   }
 
