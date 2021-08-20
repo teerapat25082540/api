@@ -18,16 +18,6 @@ export class UserService {
     private authService: AuthService,
   ) {}
 
-  async findOne(id: string): Promise<UserDto> {
-    return await this.userRepository.findOne({ id });
-    // .pipe(
-    //   map((user: UserDto) => {
-    //     const { password, ...result } = user;
-    //     return result;
-    //   }),
-    // );
-  }
-
   async findAllData(): Promise<UserDto[]> {
     return await this.userRepository.find();
   }
@@ -60,7 +50,7 @@ export class UserService {
 
   //   }
 
-  async updateData(id: string, userData: UserDto): Promise<UpdateResult> {
+  async updateData(id: string, userData: UserDto): Promise<UpdateResult> {   
     return await this.userRepository.update(id, userData);
   }
 
@@ -102,9 +92,9 @@ export class UserService {
     return await this.userRepository.findOne({ username: username });
   }
 
-  async findById(acccessToken: string): Promise<any> {
+  async findById(accessToken: string): Promise<any> {
   
-    const decoded: any = await jwt_decode(acccessToken);
+    const decoded: any = await jwt_decode(accessToken);
     const userId: string = decoded.user
     const res = await this.userRepository.findOne(userId)
    

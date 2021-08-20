@@ -17,7 +17,8 @@ import { UserService } from '../service/user.service';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
-
+  
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createData(@Body() userPoint: UserDto): Promise<UserDto | Object> {
     return await this.userService.createData(userPoint);
@@ -35,17 +36,12 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Param() params): Promise<UserDto> {
-    return await this.userService.findOne(params.id);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post('getuser')
   async findUserById(@Body() params): Promise<any> {
     return await this.userService.findById(params.accessToken);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateData(
     @Param('id') id: string,
@@ -54,6 +50,7 @@ export class UserController {
     return await this.userService.updateData(id, userPoint);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<DeleteResult> {
     return await this.userService.deleteData(id);
