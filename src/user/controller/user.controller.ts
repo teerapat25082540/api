@@ -37,7 +37,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Post('getuser')
-  async findUserById(@Body() params): Promise<any> {
+  async findUserById(@Body() params: any): Promise<any> {
     return await this.userService.findById(params.accessToken);
   }
 

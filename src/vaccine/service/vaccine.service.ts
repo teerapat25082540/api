@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
+import { AuthService } from 'src/auth/service/auth.service';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { VaccineEntity } from '../models/vaccine.entity';
 import { Vaccine } from '../models/vaccine.interface';
@@ -10,14 +11,17 @@ export class VaccineService {
   constructor(
     @InjectRepository(VaccineEntity)
     private readonly vaccineRepository: Repository<VaccineEntity>,
+    //private authService: AuthService,
   ) {}
 
   async findAllData(): Promise<Vaccine[]> {
-    return await this.vaccineRepository.query("SELECT * FROM public.vaccine");
+    return await this.vaccineRepository.query('SELECT * FROM public.vaccine');
   }
 
   async findAllDataFromId(user_id: string): Promise<Vaccine[]> {
-    return await this.vaccineRepository.query(`SELECT * FROM public.vaccine WHERE user_id = '${user_id}'`);
+    return await this.vaccineRepository.query(
+      `SELECT * FROM public.vaccine WHERE user_id = '${user_id}' ORDER BY "createAt"::timestamp DESC`,
+    );
   }
 
   async createData(vaccineData: Vaccine): Promise<Vaccine> {
