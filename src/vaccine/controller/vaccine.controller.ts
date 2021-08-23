@@ -17,8 +17,7 @@ import { VaccineService } from '../service/vaccine.service';
 @Controller('vaccine')
 export class VaccineController {
   constructor(private vaccineService: VaccineService) {}
-  
-  @UseGuards(JwtAuthGuard)
+
   @Get()
   async findAllData(): Promise<Vaccine[]> {
     return await this.vaccineService.findAllData();

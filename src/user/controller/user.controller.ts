@@ -18,7 +18,6 @@ import { UserService } from '../service/user.service';
 export class UserController {
   constructor(private userService: UserService) {}
   
-  @UseGuards(JwtAuthGuard)
   @Post()
   async createData(@Body() userPoint: UserDto): Promise<UserDto | Object> {
     return await this.userService.createData(userPoint);
