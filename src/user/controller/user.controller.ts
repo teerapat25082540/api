@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { catchError, of, map } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-guard';
@@ -15,6 +17,7 @@ import { ReturnDataDto, UserDto } from '../model/user.dto';
 import { UserService } from '../service/user.service';
 
 @Controller('user')
+@UsePipes(new ValidationPipe())
 export class UserController {
   constructor(private userService: UserService) {}
   

@@ -1,3 +1,4 @@
+import { IsEmail, IsMobilePhone, IsNotEmpty } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('user')
@@ -6,22 +7,23 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column('')
+    @Column({ nullable: true })
     username: string;
 
-    @Column('')
+    @Column({ nullable: true })
     password: string;
 
-    @Column('')
+    @Column({ nullable: true })
     firstname: string;
 
-    @Column('')
+    @Column({ nullable: true })
     lastname: string;
 
-    @Column('')
+    @Column({ unique: true,
+        nullable: true })
     email: string;
 
-    @Column('')
+    @Column({ nullable: true })
     tel: string;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
