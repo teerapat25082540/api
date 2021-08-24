@@ -17,11 +17,11 @@ import { ReturnDataDto, UserDto } from '../model/user.dto';
 import { UserService } from '../service/user.service';
 
 @Controller('user')
-@UsePipes(new ValidationPipe())
 export class UserController {
   constructor(private userService: UserService) {}
   
   @Post()
+  @UsePipes(new ValidationPipe())
   async createData(@Body() userPoint: UserDto): Promise<UserDto | Object> {
     return await this.userService.createData(userPoint);
   }
