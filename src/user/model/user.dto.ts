@@ -1,11 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsAlphanumeric, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber } from "class-validator";
 import { Column } from "typeorm";
+import { UniqueOnDatabase } from "../UniqueValidation";
+import { UserEntity } from "./user.entity";
 
 export class UserDto {
 
     id?: string;
 
+    @UniqueOnDatabase(UserEntity)
     @IsAlphanumeric()
     @IsNotEmpty({ message: 'The username is required' })
     @ApiProperty()
@@ -27,6 +30,7 @@ export class UserDto {
     @IsNotEmpty({ message: 'The lassname is required' })
     lastname?: string;
 
+    @UniqueOnDatabase(UserEntity)
     @ApiProperty()
     @IsNotEmpty({ message: 'The email is required' })
     @IsEmail()
