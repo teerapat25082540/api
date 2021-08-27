@@ -21,7 +21,6 @@ export class UserDto {
 
     @ApiProperty()
     @IsAlphanumeric()
-    @IsAlphanumeric()
     @IsNotEmpty({ message: 'The firstname is required' })
     firstname?: string;
 

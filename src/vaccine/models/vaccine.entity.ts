@@ -7,30 +7,30 @@ import {
 @Entity('vaccine')
 export class VaccineEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   user_id: string;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   name: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   amount: number;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   email: string;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   tel: string;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   lat: number;
 
-  @Column({ type: 'real' })
+  @Column({ type: 'real', nullable: true })
   long: number;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   description: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
